@@ -1,130 +1,294 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "title": "Grab Restaurant API",
-      "description": "All RESTful API Endpoint for Grab Restaurant",
-      "version": "0.0.1"
-    },
-    "paths": {
-      "/api/auth/signin": {
-        "post": {
-            "tags": ["Authentication"],
-          "description": "Sign in to Grab Restaurant",
-          "parameters":[{
-            "name": "body",
-            "in": "body",
-            "required": true,
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Restaurant API",
+    "description": "API for managing restaurants and user authentication"
+  },
+  "paths": {
+    "/restaurants": {
+      "get": {
+        "summary": "Get all restaurants",
+        "responses": {
+          "200": {
+            "description": "Successful response",
             "schema": {
+              "type": "array",
+              "items": {
                 "type": "object",
                 "properties": {
-                    "username": {"type":"string"},
-                    "password": {"type":"string"}
-                }
-            }
-            }],
-          "responses": {
-            "200": {
-              "description": "Successfully signed in",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "number"
-                      },
-                      "username": {
-                        "type": "string"
-                      },
-                      "email": {
-                        "type": "string"
-                      },
-                      "roles": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
-                      "accessToken": {
-                        "type": "string"
-                      }
-                    },
-                    "example": {
-                      "id": 3,
-                      "username": "username",
-                      "email": "email@webmail.npru.ac.th",
-                      "roles": ["ROLES_MODERATOR", "ROLES_ADMIN"],
-                      "accessToken": "eyJhbGc....S_2b42-zD4"
-                    }
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "img": {
+                    "type": "string"
                   }
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
-        },
-        "/restaurant/{id}": {
-            "get": {
-                "tags": [
-                    "Restaurant"
-                ],
-                "description": "Sign in to Grab Restaurant",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Get restaurant Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "id": {
-                                            "type": "number"
-                                        },
-                                        "name": {
-                                            "type": "string"
-                                        },
-                                        "type": {
-                                            "type": "string"
-                                        },
-                                        "imageurl": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "example": {
-                                        "id": 3,
-                                        "name": "name",
-                                        "type": "type",
-                                        "imageurl": "imageurl"
-                                    }
-                                }
-                            }
-                        }
-                    }
+      }
+    },
+    "/restaurants/{id}": {
+      "get": {
+        "summary": "Get a restaurant by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "img": {
+                  "type": "string"
                 }
-            },
-            "put": {
-                "tags": [
-                    "Restaurant"
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "Restaurant"
-                ]
+              }
             }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
-
+      },
+      "delete": {
+        "summary": "Delete a restaurant by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a restaurant by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "summary": "Register a new user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "summary": "Authenticate and get access tokens",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "roles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "accessToken": {
+                  "type": "string"
+                },
+                "refreshToken": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/refreshToken": {
+      "post": {
+        "summary": "Refresh access token using refresh token",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "refreshToken": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "accessToken": {
+                  "type": "string"
+                },
+                "refreshToken": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     }
-  
-  
+  }
+}
