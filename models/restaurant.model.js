@@ -15,10 +15,6 @@ const Restaurant = sequelize.define("restaurant", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  price: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
   img: {
     type: DataTypes.STRING,
     allowNull: false,
