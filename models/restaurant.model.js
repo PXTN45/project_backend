@@ -15,6 +15,10 @@ const Restaurant = sequelize.define("restaurant", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  price: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   img: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -30,5 +34,13 @@ const Restaurant = sequelize.define("restaurant", {
     defaultValue: DataTypes.NOW,
   },
 });
+
+// Restaurant.sync({ force: false })
+//   .then(() => {
+//     console.log("Tabel create r already exists");
+//   })
+//   .catch((error) => {
+//     console.log("error creating tabel:", error);
+//   });
 
 module.exports = Restaurant;
